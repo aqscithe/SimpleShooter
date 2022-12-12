@@ -29,6 +29,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class USkeletalMeshComponent* SkeletalMesh;
 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	class UParticleSystem* MuzzleFlash;
+
 public:	
 
 	void PullTrigger();
