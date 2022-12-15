@@ -55,21 +55,25 @@ void AGun::PullTrigger()
 	bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(OutHit, ViewPointLocation, End, ECC_GameTraceChannel1);	
 	if (bHitSuccess)
 	{
-		FVector ShotDirection = -ViewPointRotation.Vector();
-		UGameplayStatics::SpawnEmitterAtLocation(
-			GetWorld(), 
-			BulletImpact, 
-			OutHit.ImpactPoint, 
-			(ShotDirection + OutHit.ImpactNormal).Rotation()
-		);
+		HandleHit(ViewPointRotation, OutHit, OwnerController);
+	}
+}
 
-		AActor* HitActor = OutHit.GetActor();
-		if (HitActor && HitActor != GetOwner() && HitActor != this)
-		{
-			FPointDamageEvent BulletDamageEvent = FPointDamageEvent(Damage, OutHit, ShotDirection, UDamageType::StaticClass());
-			HitActor->TakeDamage(Damage, BulletDamageEvent, OwnerController, this);
-			UE_LOG(LogTemp, Display, TEXT("Actor %s was shot."), *HitActor->GetName());
-		}
+void AGun::HandleHit(FRotator& ViewPointRotation, FHitResult& OutHit, AController* OwnerController)
+{
+	FVector ShotDirection = -ViewPointRotation.Vector();
+	UGameplayStatics::SpawnEmitterAtLocation(
+		GetWorld(),
+		BulletImpact,
+		OutHit.ImpactPoint,
+		(ShotDirection + OutHit.ImpactNormal).Rotation()
+	);
+
+	AActor* HitActor = OutHit.GetActor();
+	if (HitActor && HitActor != GetOwner() && HitActor != this)
+	{
+		FPointDamageEvent BulletDamageEvent = FPointDamageEvent(Damage, OutHit, ShotDirection, UDamageType::StaticClass());
+		HitActor->TakeDamage(Damage, BulletDamageEvent, OwnerController, this);
 	}
 }
 

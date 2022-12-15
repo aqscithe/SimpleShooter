@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Gun.h"
+#include "HealthComponent.h"
 
 
 // Sets default values
@@ -20,6 +21,8 @@ AShooterCharacter::AShooterCharacter()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
 	Camera->SetupAttachment(SpringArm);
+
+	//CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
 // Called when the game starts or when spawned
@@ -93,6 +96,17 @@ void AShooterCharacter::LookUpRate(float AxisValue)
 void AShooterCharacter::Shoot()
 {
 	Gun->PullTrigger();
+}
+
+void AShooterCharacter::SetDead(bool bDead)
+{
+	Dead = bDead;
+}
+
+bool AShooterCharacter::IsDead() const
+{
+
+	return Dead;
 }
 
 

@@ -44,6 +44,8 @@ private:
 public:	
 
 	void PullTrigger();
+
+	void HandleHit(FRotator& ViewPointRotation, FHitResult& OutHit, AController* OwnerController);
 	
 
 };

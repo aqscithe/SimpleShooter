@@ -3,6 +3,8 @@
 
 #include "HealthComponent.h"
 
+#include "ShooterGameMode.h"
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -35,13 +37,20 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UHealthComponent::PointDamageTaken(AActor* DamagedActor, float Damage, class AController* InstigatedBy, FVector HitLocation, class UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const class UDamageType* DamageType, AActor* DamageCauser)
+void UHealthComponent::PointDamageTaken(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser)
 {
 	if (Damage <= 0.f) return;
 
-	Health -= Damage;
-	
-	UE_LOG(LogTemp, Warning, TEXT("Actor %s received %f damage. Current Health: %f"), *DamagedActor->GetName(), Damage, Health);
+	float DamageToApply = FMath::Min(Health, Damage);
+
+	Health -= DamageToApply;
+
+	UE_LOG(LogTemp, Warning, TEXT("Actor %s received %f damage. Current Health: %f"), *DamagedActor->GetName(), DamageToApply, Health);
+
+	if (Health <= 0.f)
+	{
+		ShooterGameMode->ActorDied(DamagedActor);
+	}
 	
 }
 

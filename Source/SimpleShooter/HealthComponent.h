@@ -25,14 +25,17 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION()
-	void PointDamageTaken(AActor* DamagedActor, float Damage, class AController* InstigatedBy, FVector HitLocation, class UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const class UDamageType* DamageType, AActor* DamageCauser);
+	void PointDamageTaken(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser);
 
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Health")
 	float MaxHealth = 100.f;
 
+	UPROPERTY(VisibleAnywhere, Category = "Health")
 	float Health = 0.f;
+
+	class AShooterGameMode* ShooterGameMode;
 
 		
 };
