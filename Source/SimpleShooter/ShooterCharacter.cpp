@@ -42,7 +42,6 @@ void AShooterCharacter::BeginPlay()
 void AShooterCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -105,7 +104,6 @@ void AShooterCharacter::SetDead(bool bDead)
 
 bool AShooterCharacter::IsDead() const
 {
-
 	return Dead;
 }
 
