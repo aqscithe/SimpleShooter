@@ -40,6 +40,8 @@ public:
 
 	void SetDead(bool bDead);
 
+	void Shoot();
+
 private:
 
 	void MoveForward(float AxisValue);
@@ -50,7 +52,7 @@ private:
 	void LookRightRate(float AxisValue);
 	void LookUpRate(float AxisValue);
 
-	void Shoot();
+	
 
 
 	UPROPERTY(EditAnywhere, Category = "Movement")
