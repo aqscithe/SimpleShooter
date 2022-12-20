@@ -8,6 +8,8 @@
 #include "Camera/CameraComponent.h"
 #include "Gun.h"
 #include "HealthComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "ShooterGameMode.h"
 
 
 // Sets default values
@@ -100,6 +102,16 @@ void AShooterCharacter::Shoot()
 void AShooterCharacter::SetDead(bool bDead)
 {
 	Dead = bDead;
+
+	if (Dead)
+	{
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		AShooterGameMode* ShooterGameMode = Cast<AShooterGameMode>(GetWorld()->GetAuthGameMode());
+		if (ShooterGameMode)
+			ShooterGameMode->PawnKilled(this);
+	}
 }
 
 bool AShooterCharacter::IsDead() const

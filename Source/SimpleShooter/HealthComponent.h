@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "HealthComponent.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SIMPLESHOOTER_API UHealthComponent : public UActorComponent
 {
@@ -34,8 +33,5 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
 	float Health = 0.f;
-
-	class AShooterGameMode* ShooterGameMode;
-
 		
 };

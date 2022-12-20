@@ -21,7 +21,7 @@ void UBTService_PlayerLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerComp
 
 	AAIController* AI = OwnerComp.GetAIOwner();
 
-	if (AI)
+	if (AI && PlayerPawn)
 	{
 		if (AI->LineOfSightTo(PlayerPawn))
 		{

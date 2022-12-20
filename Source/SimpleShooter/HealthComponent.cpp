@@ -3,7 +3,7 @@
 
 #include "HealthComponent.h"
 
-#include "ShooterGameMode.h"
+#include "ShooterCharacter.h"
 
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
@@ -24,8 +24,6 @@ void UHealthComponent::BeginPlay()
 	Health = MaxHealth;
 
 	GetOwner()->OnTakePointDamage.AddDynamic(this, &UHealthComponent::PointDamageTaken);
-
-	
 }
 
 
@@ -49,7 +47,7 @@ void UHealthComponent::PointDamageTaken(AActor* DamagedActor, float Damage, ACon
 
 	if (Health <= 0.f)
 	{
-		ShooterGameMode->ActorDied(DamagedActor);
+		Cast<AShooterCharacter>(DamagedActor)->SetDead(true);
 	}
 	
 }

@@ -51,8 +51,12 @@ void AGun::PullTrigger()
 
 	FVector End = ViewPointLocation + ViewPointRotation.Vector() * MaxRange;
 
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+
 	FHitResult OutHit;
-	bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(OutHit, ViewPointLocation, End, ECC_GameTraceChannel1);	
+	bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(OutHit, ViewPointLocation, End, ECC_GameTraceChannel1, Params);	
 	if (bHitSuccess)
 	{
 		HandleHit(ViewPointRotation, OutHit, OwnerController);
@@ -70,7 +74,7 @@ void AGun::HandleHit(FRotator& ViewPointRotation, FHitResult& OutHit, AControlle
 	);
 
 	AActor* HitActor = OutHit.GetActor();
-	if (HitActor && HitActor != GetOwner() && HitActor != this)
+	if (HitActor)
 	{
 		FPointDamageEvent BulletDamageEvent = FPointDamageEvent(Damage, OutHit, ShotDirection, UDamageType::StaticClass());
 		HitActor->TakeDamage(Damage, BulletDamageEvent, OwnerController, this);

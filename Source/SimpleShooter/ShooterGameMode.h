@@ -18,7 +18,7 @@ class SIMPLESHOOTER_API AShooterGameMode : public AGameModeBase
 public:
 		virtual void BeginPlay() override;
 
-		void ActorDied(AActor* DeadActor);
+		virtual void PawnKilled(class APawn* DeadPawn);
 
 private:
 
