@@ -42,7 +42,10 @@ private:
 	class UParticleSystem* BulletImpact;
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
-	class USoundBase* BulletImpactCharacter;
+	class USoundBase* BulletImpactSound;
+
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	class USoundBase* GunShotSound;
 
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float MaxRange = 1000.f;
