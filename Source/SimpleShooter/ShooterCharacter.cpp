@@ -105,12 +105,14 @@ void AShooterCharacter::SetDead(bool bDead)
 
 	if (Dead)
 	{
-		DetachFromControllerPendingDestroy();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
 		AShooterGameMode* ShooterGameMode = Cast<AShooterGameMode>(GetWorld()->GetAuthGameMode());
 		if (ShooterGameMode)
 			ShooterGameMode->PawnKilled(this);
+
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		
 	}
 }
 

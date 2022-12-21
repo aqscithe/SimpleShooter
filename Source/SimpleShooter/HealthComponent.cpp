@@ -49,6 +49,5 @@ void UHealthComponent::PointDamageTaken(AActor* DamagedActor, float Damage, ACon
 	{
 		Cast<AShooterCharacter>(DamagedActor)->SetDead(true);
 	}
-	
 }
 

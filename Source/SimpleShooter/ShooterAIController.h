@@ -21,6 +21,8 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	bool IsDead() const;
+
 	APawn* PlayerPawn;
 
 private:

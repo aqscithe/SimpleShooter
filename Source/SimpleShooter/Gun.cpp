@@ -38,46 +38,59 @@ void AGun::PullTrigger()
 {
 	UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, SkeletalMesh, TEXT("MuzzleFlashSocket"));
 
+	FVector ShotDirection;
+	FHitResult OutHit;
+
+	bool bHitSuccess = GunTraceHit(ShotDirection, OutHit);
+	if (bHitSuccess)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), BulletImpact, OutHit.ImpactPoint, (ShotDirection + OutHit.ImpactNormal).Rotation());
+		DamageActor(ShotDirection, OutHit);
+	}
+}
+
+void AGun::DamageActor(FVector& ShotDirection, FHitResult& OutHit)
+{
+	AActor* HitActor = OutHit.GetActor();
+	if (HitActor)
+	{
+		AController* OwnerController = GetOwnerController();
+		if (OwnerController)
+		{
+			FPointDamageEvent BulletDamageEvent = FPointDamageEvent(Damage, OutHit, ShotDirection, UDamageType::StaticClass());
+			HitActor->TakeDamage(Damage, BulletDamageEvent, OwnerController, this);
+		}
+	}
+}
+
+AController* AGun::GetOwnerController() const
+{
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (OwnerPawn == nullptr) 
+		return nullptr;
+
+	return OwnerPawn->GetController();
+}
+
+bool AGun::GunTraceHit(FVector& ShotDirection, FHitResult& OutHit)
+{
 	FVector ViewPointLocation;
 	FRotator ViewPointRotation;
-	
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if (OwnerPawn == nullptr) return;
 
-	AController* OwnerController = OwnerPawn->GetController();
-	if (OwnerController == nullptr) return;
-	
-	OwnerController->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
+	AController* OwnerController = GetOwnerController();
+	if (OwnerController)
+		OwnerController->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
+	else
+		return false;
+
+	ShotDirection = -ViewPointRotation.Vector();
 
 	FVector End = ViewPointLocation + ViewPointRotation.Vector() * MaxRange;
 
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(this);
 	Params.AddIgnoredActor(GetOwner());
-
-	FHitResult OutHit;
-	bool bHitSuccess = GetWorld()->LineTraceSingleByChannel(OutHit, ViewPointLocation, End, ECC_GameTraceChannel1, Params);	
-	if (bHitSuccess)
-	{
-		HandleHit(ViewPointRotation, OutHit, OwnerController);
-	}
-}
-
-void AGun::HandleHit(FRotator& ViewPointRotation, FHitResult& OutHit, AController* OwnerController)
-{
-	FVector ShotDirection = -ViewPointRotation.Vector();
-	UGameplayStatics::SpawnEmitterAtLocation(
-		GetWorld(),
-		BulletImpact,
-		OutHit.ImpactPoint,
-		(ShotDirection + OutHit.ImpactNormal).Rotation()
-	);
-
-	AActor* HitActor = OutHit.GetActor();
-	if (HitActor)
-	{
-		FPointDamageEvent BulletDamageEvent = FPointDamageEvent(Damage, OutHit, ShotDirection, UDamageType::StaticClass());
-		HitActor->TakeDamage(Damage, BulletDamageEvent, OwnerController, this);
-	}
+	
+	return GetWorld()->LineTraceSingleByChannel(OutHit, ViewPointLocation, End, ECC_GameTraceChannel1, Params);
 }
 

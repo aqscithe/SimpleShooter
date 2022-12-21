@@ -23,6 +23,12 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+	bool GunTraceHit(FVector& ShotDirection, FHitResult& OutHit);
+
+	void DamageActor(FVector& ShotDirection, FHitResult& OutHit);
+
+	AController* GetOwnerController() const;
+
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class USceneComponent* Root;
 
@@ -35,6 +41,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	class UParticleSystem* BulletImpact;
 
+	UPROPERTY(EditAnywhere, Category = "Sound")
+	class USoundBase* BulletImpactCharacter;
+
 	UPROPERTY(EditAnywhere, Category = "Shooting")
 	float MaxRange = 1000.f;
 
@@ -45,7 +54,7 @@ public:
 
 	void PullTrigger();
 
-	void HandleHit(FRotator& ViewPointRotation, FHitResult& OutHit, AController* OwnerController);
+	
 	
 
 };
