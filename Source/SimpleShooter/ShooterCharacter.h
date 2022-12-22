@@ -80,8 +80,6 @@ private:
 	UPROPERTY()
 	AGun* Gun;
 
-	
-
 	bool Dead = false;
 
 };
