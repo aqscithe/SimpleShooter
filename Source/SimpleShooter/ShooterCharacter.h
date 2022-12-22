@@ -28,6 +28,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	class UCameraComponent* Camera;
 
+	//UPROPERTY(VisibleAnywhere, Category = "Components")
+	class UHealthComponent* HealthComponent;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -39,6 +42,9 @@ public:
 	bool IsDead() const;
 
 	void SetDead(bool bDead);
+
+	UFUNCTION(BlueprintPure)
+	float GetHealthPercentage() const;
 
 	void Shoot();
 
@@ -53,8 +59,6 @@ private:
 	void LookUpRate(float AxisValue);
 
 	
-
-
 	UPROPERTY(EditAnywhere, Category = "Movement")
 	float ForwardSpeed = 100.f;
 
@@ -75,6 +79,8 @@ private:
 
 	UPROPERTY()
 	AGun* Gun;
+
+	
 
 	bool Dead = false;
 

@@ -24,6 +24,7 @@ void UHealthComponent::BeginPlay()
 	Health = MaxHealth;
 
 	GetOwner()->OnTakePointDamage.AddDynamic(this, &UHealthComponent::PointDamageTaken);
+
 }
 
 
@@ -49,5 +50,10 @@ void UHealthComponent::PointDamageTaken(AActor* DamagedActor, float Damage, ACon
 	{
 		Cast<AShooterCharacter>(DamagedActor)->SetDead(true);
 	}
+}
+
+float UHealthComponent::GetHealthPercentage() const
+{
+	return Health / MaxHealth;
 }
 

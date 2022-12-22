@@ -24,7 +24,7 @@ AShooterCharacter::AShooterCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera Component"));
 	Camera->SetupAttachment(SpringArm);
 
-	//CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
+	//Health = CreateDefaultSubobject<UHealthComponent>(TEXT("Health"));
 }
 
 // Called when the game starts or when spawned
@@ -37,6 +37,8 @@ void AShooterCharacter::BeginPlay()
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
 	Gun->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Gun->SetOwner(this);
+
+	HealthComponent = FindComponentByClass<UHealthComponent>();
 	
 }
 
@@ -119,6 +121,13 @@ void AShooterCharacter::SetDead(bool bDead)
 bool AShooterCharacter::IsDead() const
 {
 	return Dead;
+}
+
+float AShooterCharacter::GetHealthPercentage() const
+{
+	if (HealthComponent)
+		return HealthComponent->GetHealthPercentage();
+	return 0.f;
 }
 
 

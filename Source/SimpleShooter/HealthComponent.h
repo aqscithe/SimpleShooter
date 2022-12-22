@@ -26,12 +26,14 @@ public:
 	UFUNCTION()
 	void PointDamageTaken(AActor* DamagedActor, float Damage, AController* InstigatedBy, FVector HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector ShotFromDirection, const UDamageType* DamageType, AActor* DamageCauser);
 
+	float GetHealthPercentage() const;
+
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Health")
 	float MaxHealth = 100.f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Health")
-	float Health = 0.f;
+	float Health = 1.f;
 		
 };

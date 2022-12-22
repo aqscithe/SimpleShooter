@@ -16,7 +16,11 @@ class SIMPLESHOOTER_API AShooterPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+protected:
+	void BeginPlay() override;
+
 public:
+
 	void GameHasEnded(class AActor* EndGameFocus = nullptr, bool bIsWinner = false) override;
 
 private:
@@ -31,5 +35,11 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UUserWidget> WinScreenClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UUserWidget> HUDClass;
+
+	UPROPERTY()
+	UUserWidget* HUDWidget;
 	
 };
